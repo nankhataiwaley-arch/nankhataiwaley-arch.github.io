@@ -1,0 +1,15 @@
+{
+  "name": "nan-khatai-waley",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static brand and product showcase website for a homemade Nan Khatai business.",
+  "keywords": ["nan-khatai", "bakery", "static-site", "github-pages"],
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "npx --yes serve .",
+    "start": "npx --yes serve .",
+    "build": "echo \"No build step needed — this is a static site. Deploy the folder as-is.\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

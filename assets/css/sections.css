@@ -1,0 +1,256 @@
+/* ============================================================
+   SECTIONS — hero, intro, products, story, why, instagram, cta
+   ============================================================ */
+
+/* ---------- Hero -------------------------------------------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(56px, 8vw, 104px) 0 clamp(64px, 9vw, 112px);
+  background:
+    radial-gradient(820px 480px at 82% -10%, rgba(201, 139, 58, .20), transparent 62%),
+    radial-gradient(640px 420px at 2% 106%, rgba(74, 44, 26, .10), transparent 60%),
+    var(--cream);
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(36px, 6vw, 76px);
+  align-items: center;
+}
+
+.hero__text { min-width: 0; }   /* lets long words wrap inside the grid */
+
+.hero h1 { margin-bottom: 20px; color: var(--brown); }
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero .lede { margin-bottom: 32px; }
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hero__note {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.hero__media { position: relative; }
+
+/* Small rotating-free "stamp" badge over the hero image. */
+.hero__stamp {
+  position: absolute;
+  right: -10px;
+  bottom: -14px;
+  display: grid;
+  place-items: center;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: var(--brown);
+  color: var(--cream);
+  border: 3px solid var(--cream);
+  box-shadow: var(--shadow-md);
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
+}
+
+/* ---------- Brand introduction ------------------------------- */
+
+.intro { background: var(--cream); }
+
+.intro__inner {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: clamp(32px, 6vw, 72px);
+  align-items: center;
+}
+
+.intro__text h2 { color: var(--brown); margin-bottom: 18px; }
+.intro__text > p { color: var(--ink-muted); font-size: 1.06rem; }
+
+/* ---------- Products ----------------------------------------- */
+
+.products { background: var(--cream-2); }
+.products .section__head h2 { color: var(--brown); }
+
+/* ---------- Our story ---------------------------------------- */
+
+.story { background: var(--cream); }
+
+.story__inner {
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: clamp(32px, 6vw, 76px);
+  align-items: center;
+}
+
+.story__text h2 { color: var(--brown); margin-bottom: 20px; }
+.story__text > p { color: var(--ink-muted); }
+
+blockquote {
+  margin: 28px 0 0;
+  padding: 22px 28px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--cream-2);
+  font-size: 1.16rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--brown);
+}
+blockquote cite {
+  display: block;
+  margin-top: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  color: var(--ink-muted);
+}
+
+/* ---------- Why choose us ------------------------------------ */
+
+.why { background: var(--cream-2); }
+.why .section__head h2 { color: var(--brown); }
+
+/* ---------- Instagram ---------------------------------------- */
+
+.instagram { background: var(--cream); }
+.instagram .section__head h2 { color: var(--brown); }
+
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 44px;
+}
+
+.ig-tile {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(145deg, var(--cream-2), var(--gold-soft));
+  box-shadow: var(--shadow-sm);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.ig-tile img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--ease);
+}
+.ig-tile.is-empty img { display: none; }
+
+.ig-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.ig-tile:hover img { transform: scale(1.08); }
+
+/* Gentle dark wash on hover so the grid reads as clickable. */
+.ig-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(74, 44, 26, 0);
+  transition: background .3s var(--ease);
+}
+.ig-tile:hover::after { background: rgba(74, 44, 26, .16); }
+
+/* ---------- Final CTA ---------------------------------------- */
+
+.cta {
+  padding: clamp(34px, 6vw, 60px) 0;
+}
+
+.cta__inner {
+  padding: clamp(44px, 7vw, 82px) clamp(24px, 5vw, 60px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(600px 320px at 82% 0%, rgba(201, 139, 58, .32), transparent 62%),
+    var(--brown-deep);
+  color: var(--cream);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.cta__inner h2 { color: #fff; margin-bottom: 12px; }
+.cta__inner > p {
+  color: rgba(251, 246, 238, .74);
+  font-size: 1.1rem;
+  max-width: 46ch;
+  margin: 0 auto 30px;
+}
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ---------- Contact ------------------------------------------ */
+
+.contact { background: var(--cream); }
+.contact .section__head h2 { color: var(--brown); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 980px) {
+  .hero__inner,
+  .intro__inner,
+  .story__inner {
+    grid-template-columns: 1fr;
+  }
+
+  /* Lead with the photography on narrow screens. */
+  .hero__media,
+  .intro .media,
+  .story .media { order: -1; }
+
+  .hero__inner { gap: 40px; }
+  .hero .lede { margin-inline: 0; }
+
+  .media--hero { aspect-ratio: 4 / 3; }
+  .media--tall { aspect-ratio: 4 / 3; }
+
+  .ig-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .hero__actions { flex-direction: column; align-items: stretch; }
+  .hero__actions .btn { width: 100%; }
+
+  .hero__stamp {
+    width: 84px;
+    height: 84px;
+    font-size: 13px;
+    right: -4px;
+    bottom: -10px;
+  }
+
+  .cta__actions { flex-direction: column; align-items: stretch; }
+  .cta__actions .btn { width: 100%; }
+
+  .ig-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+  blockquote { padding: 18px 20px; font-size: 1.06rem; }
+}

@@ -1,0 +1,182 @@
+/* ============================================================
+   BASE — design tokens, reset, typography, animation primitives
+   ============================================================ */
+
+:root {
+  /* ---- Colour palette (warm, food-inspired, deliberately small) ---- */
+  --brown:        #4a2c1a;  /* primary  — warm brown / chocolate */
+  --brown-deep:   #331d10;  /* darkest  — footers, CTA panel      */
+  --cream:        #fbf6ee;  /* background — warm ivory            */
+  --cream-2:      #f4e9d8;  /* alternating section background     */
+  --surface:      #ffffff;  /* cards                              */
+  --gold:         #c98b3a;  /* accent — golden / caramel          */
+  --gold-soft:    #f0d8ae;  /* soft golden — dividers, glows      */
+  --gold-light:   #e6b25f;
+  --ink:          #2f1d12;  /* body text — dark brown             */
+  --ink-muted:    #7a6250;  /* secondary text                     */
+  --line:         #e8dac4;  /* hairlines and borders              */
+
+  /* ---- Elevation ---- */
+  --shadow-sm: 0 1px 2px rgba(47, 29, 18, .05), 0 6px 18px rgba(47, 29, 18, .06);
+  --shadow-md: 0 2px 4px rgba(47, 29, 18, .06), 0 14px 34px rgba(47, 29, 18, .10);
+  --shadow-lg: 0 3px 6px rgba(47, 29, 18, .07), 0 26px 58px rgba(47, 29, 18, .16);
+
+  /* ---- Shape & rhythm ---- */
+  --radius-sm: 10px;
+  --radius:    18px;
+  --radius-lg: 26px;
+  --wrap:      1180px;
+  --gutter:    24px;
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(.22, .68, .36, 1);
+  --dur:  .55s;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  /* Offset anchor targets so the sticky navbar doesn't cover headings. */
+  scroll-padding-top: 84px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  overflow-x: hidden;           /* guards against horizontal scroll on mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Locks background scrolling while the mobile menu is open. */
+body.is-locked { overflow: hidden; }
+
+h1, h2, h3, .brand__name, blockquote {
+  font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+h1 { font-size: clamp(2.35rem, 5.6vw, 3.9rem); }
+h2 { font-size: clamp(1.85rem, 4vw, 2.85rem); }
+h3 { font-size: 1.25rem; }
+
+p { margin: 0 0 1.05rem; }
+p:last-child { margin-bottom: 0; }
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a { color: inherit; }
+
+/* Visible, on-brand focus ring for keyboard users. */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---- Utility ------------------------------------------------ */
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.center { text-align: center; }
+.muted  { color: var(--ink-muted); }
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+
+.lede {
+  font-size: clamp(1.05rem, 2vw, 1.22rem);
+  color: var(--ink-muted);
+  max-width: 54ch;
+}
+
+/* Short decorative divider. */
+.rule {
+  width: 64px;
+  height: 3px;
+  margin-top: 26px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 200;
+}
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+  background: var(--brown);
+  color: var(--cream);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+/* ============================================================
+   ANIMATION PRIMITIVES
+   ============================================================ */
+
+/* Scroll reveal — JS adds .is-visible when the element enters view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px) scale(.985);
+  transition:
+    opacity var(--dur) var(--ease) var(--d, 0ms),
+    transform var(--dur) var(--ease) var(--d, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Page-load entrance for hero content. */
+.load-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: loadIn .8s var(--ease) forwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes loadIn {
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- Respect reduced-motion preferences --------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+
+  .reveal { opacity: 1; transform: none; }
+  .load-in { opacity: 1; transform: none; animation: none; }
+}
