@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  min-height: 72px;
+  min-height: var(--nav-h);
 }
 
 .brand {
@@ -36,8 +36,40 @@
   text-decoration: none;
   flex-shrink: 0;
 }
-.brand__mark { font-size: 26px; line-height: 1; }
-.brand__name { font-size: 21px; color: var(--brown); }
+.brand__mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: clamp(34px, 7vw, 42px);
+  aspect-ratio: 1;
+  font-size: clamp(22px, 5vw, 26px);
+  line-height: 1;
+}
+.brand__mark img {
+  width: 100%;
+  height: 100%;
+  /* The badge is round; the file is a transparent-cornered square. */
+  border-radius: 50%;
+  object-fit: contain;
+}
+/* Same contract as .media: main.js adds .is-empty if the file is missing,
+   and the emoji takes over so the navbar never shows a broken icon. */
+.brand__fallback { display: none; }
+.brand__mark.is-empty img { display: none; }
+.brand__mark.is-empty .brand__fallback { display: block; }
+
+.brand__mark--lg {
+  width: clamp(56px, 12vw, 68px);
+  margin-bottom: 14px;
+  font-size: 40px;
+}
+.brand__name {
+  font-size: clamp(17px, 4.4vw, 21px);
+  color: var(--brown);
+  /* The one place a wrap would look wrong. */
+  white-space: nowrap;
+}
 
 .navbar__menu {
   display: flex;
@@ -108,11 +140,17 @@
 
 /* ---------- Grids ------------------------------------------- */
 
-.grid { display: grid; gap: 24px; }
+.grid { display: grid; gap: clamp(16px, 2.4vw, 24px); }
 
-.grid--products { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
-.grid--features { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.grid--contact  { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+/* min() caps the track at the container width, so a 290px minimum can
+   never overflow a 320px phone. */
+.grid--products { grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); }
+.grid--features { grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); }
+.grid--contact  { grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); }
+
+/* Grid items default to min-width:auto, which lets long words stretch a
+   column past its track. */
+.grid > * { min-width: 0; }
 
 /* ---------- Footer ------------------------------------------ */
 
@@ -131,6 +169,7 @@
   padding-bottom: 34px;
 }
 
+.footer__brand { display: flex; flex-direction: column; align-items: flex-start; }
 .footer__brand .brand__name {
   color: var(--cream);
   font-size: 24px;
@@ -176,7 +215,10 @@
   z-index: 90;
   display: none;              /* enabled in the mobile media query */
   gap: 10px;
-  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  padding-top: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  padding-left: max(14px, env(safe-area-inset-left));
+  padding-right: max(14px, env(safe-area-inset-right));
   background: rgba(251, 246, 238, .94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -209,18 +251,22 @@
    RESPONSIVE
    ============================================================ */
 
-/* ---- Tablet ---- */
-@media (max-width: 960px) {
-  .grid { gap: 20px; }
+/* ---- Wide desktops and 4K: let the measure grow, but only a little ---- */
+@media (min-width: 1500px) {
+  :root { --wrap: 1320px; }
 }
 
-/* ---- Mobile: switch the navbar to a slide-down panel ---- */
-@media (max-width: 820px) {
+/* ---- Tablet and below: the navbar becomes a slide-down panel.
+   960px, not the old 820px: brand + five links + the CTA measure roughly
+   960px, so they were already crowding between those two widths. ---- */
+@media (max-width: 960px) {
+  .grid { gap: 20px; }
+
   .navbar__toggle { display: flex; }
 
   .navbar__menu {
     position: fixed;
-    inset: 72px 0 auto 0;
+    inset: var(--nav-h) 0 auto 0;
     flex-direction: column;
     align-items: stretch;
     gap: 2px;
@@ -228,6 +274,13 @@
     background: var(--cream);
     border-bottom: 1px solid var(--line);
     box-shadow: 0 20px 40px rgba(47, 29, 18, .12);
+
+    /* A short landscape phone can't show the whole panel — scroll it
+       rather than clipping the last links off the bottom. */
+    max-height: calc(100vh - var(--nav-h));
+    max-height: calc(100dvh - var(--nav-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
     /* Hidden by default — no layout jump, not focusable. */
     opacity: 0;
@@ -259,9 +312,35 @@
 }
 
 @media (max-width: 560px) {
-  body { font-size: 16px; }
-  :root { --gutter: 18px; }
-
   .footer__inner { flex-direction: column; gap: 24px; }
   .footer__bottom { flex-direction: column; gap: 6px; }
+  .footer__links { gap: 10px 20px; }
+}
+
+/* ---- Small phones (iPhone SE and similar) ---- */
+@media (max-width: 400px) {
+  .navbar__inner { gap: 10px; }
+  .brand { gap: 7px; }
+  .brand__mark { width: 30px; }
+
+  .sticky-bar { gap: 8px; }
+  .sticky-bar__btn { font-size: 14px; gap: 6px; }
+}
+
+/* ---- Foldables and 280px-class screens ---- */
+@media (max-width: 340px) {
+  .sticky-bar__btn { font-size: 13px; padding-inline: 6px; }
+  .footer__links { gap: 8px 16px; }
+}
+
+/* ---- Landscape phones: vertical space is the scarce resource ---- */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root { --nav-h: 60px; }
+
+  .section { padding: 52px 0; }
+  .footer { padding-top: 44px; }
+
+  /* Two rows of buttons would eat the whole viewport. */
+  .navbar__menu > a { padding: 10px 12px; font-size: 16px; }
+  .navbar__cta { margin-top: 8px; padding: 11px 20px; }
 }

@@ -18,9 +18,14 @@ Ordering happens entirely off-site: every call to action opens **WhatsApp** or
 **Instagram**. When adding a section or a product, the only permitted CTA is a link
 to one of those two.
 
-Related: the "Why Choose Us" claims and the Our Story copy are client-editable
-placeholders. Don't invent new factual claims about the business (certifications,
-years in operation, awards, ingredient sourcing) — only the owner can supply those.
+"Why Choose Us" claims and the Our Story copy are client-editable placeholders.
+Don't invent new factual claims about the business (certifications, years in
+operation, awards, ingredient sourcing) — only the owner can supply those.
+
+Same rule for `config.js`. As of the last edit, `instagram` is **real**
+(`nankhataiwaley`); `whatsapp`, `whatsappDisplay`, `city` and `hours` are still
+placeholders, so every WhatsApp CTA currently points at a dead number. Don't
+guess a value to fill them in — ask.
 
 ## Commands
 
@@ -35,6 +40,28 @@ deliberately empty.
 
 The site also runs correctly by opening `index.html` directly from the file
 system — see the constraint below.
+
+### Verifying a change
+
+With no tests, a headless browser is the only real check. It catches the two
+failure modes that matter here — JS not running, and a CSP that blocks its own
+page — in both contexts the site has to work in:
+
+```bash
+CHROME="/c/Program Files/Google/Chrome/Application/chrome.exe"
+# pwd -W, not pwd: Git Bash's /j/... form is not a valid file URL.
+DOC="file:///$(pwd -W | sed 's| |%20|g')/index.html"
+
+# file:// — the owner's double-click preview
+"$CHROME" --headless --disable-gpu --virtual-time-budget=5000 --dump-dom "$DOC" | grep -c "instagram.com/"
+
+# http:// — how Pages serves it. Watch stderr for "Refused to" (CSP violations).
+python -m http.server 8000 &
+"$CHROME" --headless --disable-gpu --virtual-time-budget=6000 --enable-logging=stderr --v=0 --dump-dom "http://localhost:8000/index.html"
+```
+
+A populated `href` (`wa.me/...`, `instagram.com/...`) or a filled `<span id="year">`
+proves `main.js` ran, since the HTML ships with unbound defaults.
 
 ## Architecture
 
@@ -69,10 +96,13 @@ imports fail under the `file://` origin. Don't convert to modules, and don't add
 ### Images are optional by design
 
 Photography lives in `public/images/{hero,products,story,instagram,logo}/` and is
-supplied by the owner — the repo ships with empty directories. Every `<img>` sits
-inside a `.media` or `.ig-tile` frame that has a warm gradient and an emoji behind
-it. `main.js` listens for `error` (and re-checks `complete && naturalWidth === 0`
-for images that failed before the script ran), then adds `.is-empty` to the frame,
+supplied by the owner — the repo ships with empty directories, except `logo/`,
+which holds the brand badge the owner supplied (`logo.png`, `favicon.png`,
+`apple-touch-icon.png`, `og-image.jpg`, all derived from one square JPEG). Every
+`<img>` sits inside a `.media`, `.ig-tile` or `.brand__mark` frame that has a warm
+gradient (or, for the brand mark, the old 🍪 emoji) behind it. `main.js` listens
+for `error` (and re-checks `complete && naturalWidth === 0` for images that
+failed before the script ran), then adds `.is-empty` to the frame,
 which hides the broken `<img>` and reveals the fallback.
 
 The result: the layout looks finished with zero photos. Preserve this when adding
@@ -84,8 +114,8 @@ Four files load in order, each with a distinct job:
 
 | File | Responsibility |
 |---|---|
-| `base.css` | Design tokens (`:root`), reset, typography, animation primitives, reduced-motion overrides |
-| `layout.css` | Navbar, section rhythm, grids, footer, mobile sticky bar, responsive breakpoints |
+| `base.css` | Design tokens (`:root`), reset, fluid typography, animation primitives, reduced-motion overrides |
+| `layout.css` | Navbar, section rhythm, grids, footer, mobile sticky bar, most breakpoints |
 | `components.css` | Reusable pieces: buttons, media frames, cards, features, contact cards |
 | `sections.css` | Per-section styling and its own responsive rules |
 
@@ -99,19 +129,78 @@ feel, so resist introducing new hues.
 - `data-reveal` + class `reveal` — IntersectionObserver adds `.is-visible` once, then
   unobserves. Stagger by setting `style="--d:80ms"` on the element.
 - `.load-in` — CSS keyframe entrance for hero content, staggered by the same `--d` var.
-- `[data-parallax]` — hero image only; disabled below 981px and under reduced motion.
+- `[data-parallax]` — hero image only; off under reduced motion and below 981px.
+  That width is re-evaluated live through `matchMedia`, not read once at load, so
+  rotating a tablet switches it on and off; when it switches off the handler clears
+  the inline `transform` it left behind. Don't reduce this back to a single
+  `window.innerWidth` check.
 
 Scroll handlers (navbar shadow, sticky bar, parallax) are rAF-throttled and registered
 `{ passive: true }`. `prefers-reduced-motion` is honoured in both CSS and JS — the JS
 path reveals everything immediately rather than animating. Keep both paths in sync
 when adding motion.
 
+### Responsive contract
+
+Breakpoints, smallest to largest: `340px` (foldables), `400px` (small phones),
+`560px`, `960px` (navbar becomes a hamburger panel), `980px` (two-column
+sections stack, Instagram grid goes 6 → 3, parallax cuts out), `1500px`
+(wider `--wrap`). Plus `(max-height: 500px) and (orientation: landscape)` for phones
+held sideways, where vertical space — not width — is the scarce resource.
+
+Two couplings that will bite if only one half is edited:
+
+- The navbar breakpoint lives in **both** `layout.css` (`max-width: 960px`) and
+  `main.js` (`matchMedia("(min-width: 961px)")`). They must stay adjacent.
+- `--nav-h` in `base.css` drives the navbar's `min-height`, the mobile panel's
+  top offset, its `max-height`, and `html { scroll-padding-top }`. Change the
+  token, not the four call sites.
+
+Fluid-first, breakpoints second: `--gutter`, body size, headings, section
+padding, card padding and the Instagram grid gap are all `clamp()`, so the
+layout is continuous between breakpoints rather than stepping. Auto-fit grids
+use `minmax(min(290px, 100%), 1fr)` — the bare `minmax(290px, 1fr)` form
+overflows any viewport narrower than the track.
+
+Hover lift/zoom effects are wrapped in `@media (hover: hover) and (pointer: fine)`.
+On touch the hover state sticks after a tap and the element looks stuck.
+
 ### Accessibility invariants worth not breaking
 
 The mobile sticky bar's links carry `tabindex="-1"` while hidden and are switched to
 `0` when it slides in, so keyboard users don't tab into off-screen controls. The
 hamburger toggles `aria-expanded`, locks body scroll via `body.is-locked`, closes on
-Escape, and resets when the viewport crosses back above the breakpoint.
+Escape, and resets when the viewport crosses back above the breakpoint (961px — see
+the responsive contract above). The panel is hidden with `visibility: hidden`, which
+is what keeps its links out of the tab order; a switch to `opacity: 0` alone would
+silently break that.
+
+## Security
+
+The site has no server, no forms, no user input, no cookies or storage, and no
+third-party JavaScript. `main.js` writes to `textContent` and `href` only —
+there is no `innerHTML`, no `eval`, and nothing is ever read from the URL. Keep
+it that way and there is no XSS surface to speak of.
+
+`img-src` is `'self'` — no `data:` URIs, so an inline SVG or base64 image would
+need the policy widened first.
+
+A CSP is delivered as a `<meta>` tag in `index.html` (GitHub Pages cannot send
+HTTP headers). Things that will silently break it:
+
+- **An inline `<script>` will not execute** — `script-src 'self'`. All JS must
+  stay in a file under `assets/js/`.
+- **A new third-party origin must be added to the policy first**, or the browser
+  drops the request with no visible error. Today only `fonts.googleapis.com`
+  (stylesheet) and `fonts.gstatic.com` (font files) are allowed.
+- `style-src` keeps `'unsafe-inline'` because the `style="--d:80ms"` animation
+  stagger needs it. Removing the inline styles would let it be dropped.
+- `frame-ancestors` is deliberately absent: it is ignored in a `<meta>` tag and
+  only logs a console warning. Clickjacking protection is not available on
+  Pages without a proxy in front.
+
+Verify after touching `<head>`: the policy must sit above the stylesheet and
+font links, and the page must still work opened as a `file://` URL.
 
 ## Deployment
 

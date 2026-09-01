@@ -67,12 +67,12 @@
      ---------------------------------------------------------- */
 
   function markEmpty(img) {
-    var frame = img.closest(".media, .ig-tile");
+    var frame = img.closest(".media, .ig-tile, .brand__mark");
     if (frame) frame.classList.add("is-empty");
   }
 
   function setupImageFallbacks() {
-    document.querySelectorAll(".media img, .ig-tile img").forEach(function (img) {
+    document.querySelectorAll(".media img, .ig-tile img, .brand__mark img").forEach(function (img) {
       img.addEventListener("error", function () { markEmpty(img); });
 
       // Images may have already failed before this script ran.
@@ -113,10 +113,16 @@
       }
     });
 
-    // Reset state if the viewport grows past the mobile breakpoint.
-    window.matchMedia("(min-width: 821px)").addEventListener("change", function (e) {
-      if (e.matches) setOpen(false);
-    });
+    // Reset state if the viewport grows past the mobile breakpoint
+    // (a rotation counts). Must match the 960px query in layout.css.
+    var desktop = window.matchMedia("(min-width: 961px)");
+    var onDesktopChange = function (e) { if (e.matches) setOpen(false); };
+
+    if (desktop.addEventListener) {
+      desktop.addEventListener("change", onDesktopChange);
+    } else if (desktop.addListener) {
+      desktop.addListener(onDesktopChange);   // older Safari
+    }
   }
 
   /* ----------------------------------------------------------
@@ -190,11 +196,20 @@
 
   function setupParallax() {
     var el = document.querySelector("[data-parallax]");
-    if (!el || reduceMotion || window.innerWidth < 981) return;
+    if (!el || reduceMotion) return;
 
+    // Evaluated live, not once at load: rotating a tablet or resizing a
+    // window has to be able to turn the effect on and off.
+    var wide = window.matchMedia("(min-width: 981px)");
     var ticking = false;
 
     function update() {
+      if (!wide.matches) {
+        // Clear any offset left behind when the viewport narrowed.
+        if (el.style.transform) el.style.transform = "";
+        ticking = false;
+        return;
+      }
       var y = window.scrollY || window.pageYOffset;
       // Small offset — enough to feel alive, not enough to distract.
       var shift = Math.min(y * 0.06, 34);
@@ -202,12 +217,22 @@
       ticking = false;
     }
 
-    window.addEventListener("scroll", function () {
+    function request() {
       if (!ticking) {
         ticking = true;
         window.requestAnimationFrame(update);
       }
-    }, { passive: true });
+    }
+
+    window.addEventListener("scroll", request, { passive: true });
+
+    if (wide.addEventListener) {
+      wide.addEventListener("change", request);
+    } else if (wide.addListener) {
+      wide.addListener(request);              // older Safari
+    }
+
+    update();
   }
 
   /* ----------------------------------------------------------

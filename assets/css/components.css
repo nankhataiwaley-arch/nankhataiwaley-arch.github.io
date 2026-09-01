@@ -16,7 +16,8 @@
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.2;             /* room for a label that wraps to two lines */
+  max-width: 100%;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -27,7 +28,11 @@
     border-color .22s var(--ease),
     color .22s var(--ease);
 }
-.btn:hover { transform: translateY(-2px) scale(1.02); }
+/* Lift on hover only where a real pointer exists — on touch the hover
+   state sticks after the tap and the button looks stuck. */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-2px) scale(1.02); }
+}
 .btn:active { transform: translateY(0) scale(.99); }
 
 .btn__icon { font-size: 17px; line-height: 1; }
@@ -64,7 +69,7 @@
   border-color: var(--cream);
 }
 
-.btn--lg { padding: 16px 32px; min-height: 56px; font-size: 17px; }
+.btn--lg { padding: 16px clamp(20px, 5vw, 32px); min-height: 56px; font-size: 17px; }
 .btn--sm { padding: 10px 20px; min-height: 42px; font-size: 15px; }
 
 /* ---------- Media frame -------------------------------------
@@ -124,19 +129,21 @@
     box-shadow .3s var(--ease),
     border-color .3s var(--ease);
 }
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--gold-soft);
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--gold-soft);
+  }
+  /* Smooth image zoom on hover. */
+  .card:hover .media img { transform: scale(1.07); }
 }
-/* Smooth image zoom on hover. */
-.card:hover .media img { transform: scale(1.07); }
 
 .card__body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 24px 24px 22px;
+  padding: clamp(18px, 4vw, 24px) clamp(18px, 4vw, 24px) clamp(17px, 3.6vw, 22px);
 }
 
 .card__body h3 {
@@ -196,23 +203,25 @@
 /* ---------- Feature (Why Choose Us) -------------------------- */
 
 .feature {
-  padding: 30px 24px;
+  padding: clamp(24px, 5vw, 30px) clamp(18px, 4vw, 24px);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   text-align: center;
   transition: transform .3s var(--ease), box-shadow .3s var(--ease);
 }
-.feature:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .feature:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .feature__icon {
   display: inline-grid;
   place-items: center;
-  width: 60px;
-  height: 60px;
+  width: clamp(52px, 12vw, 60px);
+  height: clamp(52px, 12vw, 60px);
   margin-bottom: 16px;
   border-radius: 50%;
   background: var(--cream-2);
@@ -230,7 +239,7 @@
 
 .contact-card {
   display: block;
-  padding: 30px 24px;
+  padding: clamp(24px, 5vw, 30px) clamp(18px, 4vw, 24px);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -239,10 +248,12 @@
   color: inherit;
   transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
 }
-.contact-card:not(.contact-card--static):hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--gold);
+@media (hover: hover) and (pointer: fine) {
+  .contact-card:not(.contact-card--static):hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--gold);
+  }
 }
 
 .contact-card__icon { font-size: 26px; }

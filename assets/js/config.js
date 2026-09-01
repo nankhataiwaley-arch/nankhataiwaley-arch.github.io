@@ -33,7 +33,7 @@ window.BUSINESS = {
   /* ---- Instagram ---------------------------------------
      Username only — without the "@".
      ------------------------------------------------------ */
-  instagram: "your_instagram_username",
+  instagram: "nankhataiwaley",
 
   /* ---- Contact details --------------------------------- */
   city: "Your City",

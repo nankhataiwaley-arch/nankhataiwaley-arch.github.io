@@ -4,6 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- ============ Security ============
+     GitHub Pages cannot send HTTP headers, so the policy is delivered
+     as a meta tag. It must stay ABOVE the font and stylesheet links it
+     governs. Verified to leave the file:// preview working.
+
+     default-src 'none'  — nothing loads unless named below
+     script-src  'self'  — no inline or third-party JS can ever execute
+     style-src           — our CSS plus the Google Fonts stylesheet.
+                           'unsafe-inline' is required by the
+                           style="--d:80ms" animation stagger attributes
+     font-src            — font files, locked to Google's font CDN
+     img-src 'self'      — local photography and the logo, nothing remote
+     base-uri 'none'     — an injected <base> can't repoint relative paths
+     form-action 'none'  — nothing can post anywhere. This site has no
+                           forms and, per the product constraint, never will
+     ============================================================ -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <!-- ============ SEO ============ -->
 <title>Nan Khatai Waley | Homemade Nan Khatai</title>
 <meta name="description" content="Freshly baked homemade Nan Khatai. Traditional taste, rich buttery goodness, and made with love. Order on WhatsApp or DM us on Instagram.">
@@ -14,12 +33,14 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Nan Khatai Waley | Homemade Nan Khatai">
 <meta property="og:description" content="Freshly baked homemade Nan Khatai. Traditional taste, rich buttery goodness, and made with love.">
-<meta property="og:image" content="public/images/hero/hero-nan-khatai.jpg">
+<meta property="og:image" content="public/images/logo/og-image.jpg">
+<meta property="og:image:alt" content="Nan Khatai Waley — homemade with love">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 
-<!-- Favicon (swap for public/images/logo/favicon.png when you have one) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍪</text></svg>">
+<!-- Favicon / home-screen icon -->
+<link rel="icon" type="image/png" href="public/images/logo/favicon.png">
+<link rel="apple-touch-icon" href="public/images/logo/apple-touch-icon.png">
 
 <!-- ============ Fonts ============ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +65,10 @@
   <div class="wrap navbar__inner">
 
     <a class="brand" href="#top" aria-label="Go to top">
-      <span class="brand__mark" aria-hidden="true">🍪</span>
+      <span class="brand__mark" aria-hidden="true">
+        <img src="public/images/logo/logo.png" alt="" width="256" height="256" decoding="async">
+        <span class="brand__fallback">🍪</span>
+      </span>
       <span class="brand__name" data-business="name">Nan Khatai Waley</span>
     </a>
 
@@ -80,7 +104,7 @@
       <div class="hero__text">
         <p class="eyebrow load-in" style="--d:0ms">Homemade · Small batch</p>
         <h1 class="load-in" style="--d:90ms">
-          Traditional Nan Khatai,<br>Made with <em>Love</em>
+          Traditional Nan Khatai,<br class="br-lg">Made with <em>Love</em>
         </h1>
         <p class="lede load-in" style="--d:180ms">
           Freshly baked Nan Khatai with that rich, buttery taste you know and love.
@@ -441,6 +465,10 @@
 <footer class="footer">
   <div class="wrap footer__inner">
     <div class="footer__brand">
+      <span class="brand__mark brand__mark--lg" aria-hidden="true">
+        <img src="public/images/logo/logo.png" alt="" width="256" height="256" loading="lazy" decoding="async">
+        <span class="brand__fallback">🍪</span>
+      </span>
       <span class="brand__name" data-business="name">Nan Khatai Waley</span>
       <p data-business="tagline">Traditional Nan Khatai, baked fresh and made with love.</p>
     </div>
