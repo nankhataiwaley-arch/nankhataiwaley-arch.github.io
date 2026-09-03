@@ -111,7 +111,7 @@
 /* Aspect ratios per context. */
 .media--hero    { aspect-ratio: 1 / 1; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
 .media--product { aspect-ratio: 5 / 4; border-radius: 0; }
-.media--soft    { aspect-ratio: 5 / 4; box-shadow: var(--shadow-md); }
+.media--soft    { aspect-ratio: 16 / 10; box-shadow: var(--shadow-md); }
 .media--tall    { aspect-ratio: 4 / 5; box-shadow: var(--shadow-md); }
 
 /* ---------- Product card ------------------------------------ */
