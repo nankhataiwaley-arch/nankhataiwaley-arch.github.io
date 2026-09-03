@@ -80,14 +80,14 @@ public/images/
 ├── hero/
 │   └── hero-nan-khatai.jpg          800 × 800   the main hero photo
 ├── products/
-│   ├── almond-nan-khatai.jpg        500 × 400
+│   ├── almond-nan-khatai.png        icon        placeholder illustration
 │   ├── elaichi-nan-khatai.jpg       500 × 400
 │   ├── pista-badam-nan-khatai.jpg   500 × 400
 │   ├── nuts-nan-khatai.jpg          500 × 400
 │   ├── chocolate-nan-khatai.jpg     500 × 400
 │   └── nan-khatai-gift-box.jpg      500 × 400
 ├── story/
-│   ├── brand-intro.jpg              700 × 560
+│   ├── brand-intro.jpg             1000 × 625
 │   └── brand-story.jpg              640 × 780   portrait
 ├── instagram/
 │   └── ig-1.jpg … ig-6.jpg          400 × 400   square

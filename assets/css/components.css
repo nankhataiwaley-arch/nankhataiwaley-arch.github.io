@@ -98,6 +98,11 @@
 
 .media.is-empty img { display: none; }
 
+/* An illustration standing in for a photo. Fit it inside the frame at icon
+   size so the gradient reads as its background, instead of cropping it to
+   fill like a photograph. */
+.media img.is-icon { object-fit: contain; padding: 30%; }
+
 .media__fallback {
   position: absolute;
   inset: 0;
