@@ -83,8 +83,8 @@ public/images/
 │   ├── almond-nan-khatai.png        icon        placeholder illustration
 │   ├── elaichi-nan-khatai.jpg       500 × 400
 │   ├── pista-badam-nan-khatai.png   icon        placeholder illustration
-│   ├── nuts-nan-khatai.jpg          500 × 400
-│   ├── chocolate-nan-khatai.jpg     500 × 400
+│   ├── nuts-nan-khatai.png          icon        placeholder illustration
+│   ├── chocolate-nan-khatai.png     icon        placeholder illustration
 │   └── nan-khatai-gift-box.jpg      500 × 400
 ├── story/
 │   ├── brand-intro.jpg             1000 × 625
