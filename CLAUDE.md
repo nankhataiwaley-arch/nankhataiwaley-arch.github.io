@@ -63,6 +63,10 @@ python -m http.server 8000 &
 A populated `href` (`wa.me/...`, `instagram.com/...`) or a filled `<span id="year">`
 proves `main.js` ran, since the HTML ships with unbound defaults.
 
+Grepping the dumped DOM for `class="brand__mark"` proves the images resolved: if
+either mark comes back carrying `is-empty`, the logo failed to load in that
+context. Both marks must come back clean over `file://` and `http://` alike.
+
 ## Architecture
 
 ### Everything is wired at runtime from one config object
@@ -107,6 +111,36 @@ which hides the broken `<img>` and reveals the fallback.
 
 The result: the layout looks finished with zero photos. Preserve this when adding
 image slots — a bare `<img>` will show a broken icon.
+
+### The logo appears in five places and comes from one file
+
+The owner supplied a square JPEG: a circular badge with white corners. Four
+assets are derived from it and committed to `public/images/logo/`. The source
+JPEG is **not** in the repo — ask the owner for it before regenerating.
+
+| File | Form | Used by |
+|---|---|---|
+| `logo.png` | 256², circular alpha mask | navbar `.brand__mark`, footer `.brand__mark--lg` |
+| `favicon.png` | 64² | `<link rel="icon">` |
+| `apple-touch-icon.png` | 180², flattened onto `--cream` | `<link rel="apple-touch-icon">`; iOS ignores alpha |
+| `og-image.jpg` | 1200×630, badge centred on `--cream` | `og:image`, and the `summary_large_image` card |
+
+Masking the white corners to a circle is what lets one file sit on both the
+cream navbar and the brown footer. The mask is drawn 4× oversized and
+downsampled, or the edge crawls. All four are quantised to 192 colours — invisible
+at these sizes, and it takes `logo.png` from 119 KB to 23 KB.
+
+Regenerate with Pillow; there is no build step and no npm dependency to add:
+
+```python
+from PIL import Image, ImageDraw
+src = Image.open(SRC).convert("RGB"); S = src.size[0]; SS = 4
+mask = Image.new("L", (S*SS, S*SS), 0)
+ImageDraw.Draw(mask).ellipse((0, 0, S*SS-1, S*SS-1), fill=255)
+logo = src.copy(); logo.putalpha(mask.resize((S, S), Image.LANCZOS))
+```
+
+Swapping the brand mark means regenerating all four, not replacing one of them.
 
 ### CSS layering
 
@@ -206,6 +240,13 @@ font links, and the page must still work opened as a `file://` URL.
 
 GitHub Pages, served from the `main` branch root — no Actions workflow, no build.
 `.nojekyll` is required so Pages serves the files as-is. A `git push` is a deploy.
+
+Live at <https://nankhataiwaley-arch.github.io/> — a root user site on the
+business's own GitHub account. Pushes must authenticate as that account: this
+machine's default Git credential belongs to a different one and is rejected with
+`403 ... denied to`, which is why a `deploy` remote carries the account name in
+its URL. The credential is not saved, so a push needs the account's PAT
+re-entered in a real terminal — it cannot be done from a non-interactive shell.
 
 Every asset path in `index.html` is relative (`assets/...`, `public/...`), which keeps
 the site working whether it's served from a repo subpath
