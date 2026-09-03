@@ -10,9 +10,16 @@ Plain HTML5 + CSS3 + JavaScript. No framework, no bundler, no dependencies.
 ## The hard product constraint
 
 **This site must never gain e-commerce functionality.** No cart, checkout, payment,
-quantity selector, order form, user accounts, prices, inventory, or delivery
-management. This is not a stylistic preference — it is the defining requirement
-from the client's written spec, and adding any of it breaks the product.
+quantity selector, order form, user accounts, inventory, or delivery management.
+This is not a stylistic preference — it is the defining requirement from the
+client's written spec, and adding any of it breaks the product.
+
+**Prices are a narrowed exception, not an opening.** The spec banned them too. The
+owner then asked for one on the Almond card and confirmed the override when it was
+put to them, so `.card__price` exists and that one card uses it. Nothing else
+follows from it: no other card carries a price unless the owner asks, and the ban
+on everything else in the list is untouched. A price is static text next to a
+WhatsApp link — it must never grow into a total, a quantity, or a checkout.
 
 Ordering happens entirely off-site: every call to action opens **WhatsApp** or
 **Instagram**. When adding a section or a product, the only permitted CTA is a link

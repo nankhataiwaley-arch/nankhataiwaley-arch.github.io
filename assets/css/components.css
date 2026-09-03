@@ -172,6 +172,16 @@
   margin-bottom: 14px;
 }
 
+/* Price. The spec keeps prices off this site; the Almond card carries one at
+   the owner's explicit request. Scoped as a child selector rather than given
+   !important, which is enough to beat .card__body > p on specificity. */
+.card__body > .card__price {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--brown);
+  margin-bottom: 14px;
+}
+
 .card__size {
   font-size: 13px !important;
   text-transform: uppercase;
