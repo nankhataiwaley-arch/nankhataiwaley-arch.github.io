@@ -137,7 +137,7 @@ What is actually filled, as of the last edit:
 | `story/brand-story.jpg` | poster frame for the video, 1000×800 |
 | `products/*.png` (five) | illustrations, **not** photographs — see below |
 | `products/nan-khatai-gift-box.jpg` | empty; the only frame still showing a fallback |
-| `instagram/ig-*.jpg` | empty |
+| `instagram/ig-1…6.jpg` | six photos, 400² square crops |
 
 ### Five product cards show illustrations, not photos
 
