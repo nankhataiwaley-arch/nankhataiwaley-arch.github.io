@@ -22,10 +22,10 @@ window.BUSINESS = {
      no leading zero.
      Example: 0300 1234567 (Pakistan) becomes 923001234567
      ------------------------------------------------------ */
-  whatsapp: "920000000000",
+  whatsapp: "923319180813",
 
   /* How the number is displayed on screen (free text). */
-  whatsappDisplay: "+92 300 000 0000",
+  whatsappDisplay: "+92 331 918 0813",
 
   /* Message pre-filled when someone taps a WhatsApp button. */
   whatsappMessage: "Hi! I would like to order Nan Khatai.",
