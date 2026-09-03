@@ -36,6 +36,6 @@ window.BUSINESS = {
   instagram: "nankhataiwaley",
 
   /* ---- Contact details --------------------------------- */
-  city: "Your City",
+  city: "Lahore, Pakistan",
   hours: "Mon – Sat, 10 AM – 8 PM"
 };
