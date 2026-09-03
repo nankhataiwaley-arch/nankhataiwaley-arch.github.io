@@ -81,7 +81,7 @@ public/images/
 │   └── hero-nan-khatai.jpg          800 × 800   the main hero photo
 ├── products/
 │   ├── almond-nan-khatai.png        icon        placeholder illustration
-│   ├── elaichi-nan-khatai.jpg       500 × 400
+│   ├── elaichi-nan-khatai.png       icon        placeholder illustration
 │   ├── pista-badam-nan-khatai.png   icon        placeholder illustration
 │   ├── nuts-nan-khatai.png          icon        placeholder illustration
 │   ├── chocolate-nan-khatai.png     icon        placeholder illustration
