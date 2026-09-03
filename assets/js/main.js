@@ -81,6 +81,28 @@
   }
 
   /* ----------------------------------------------------------
+     2b. Story video
+     Same fallback contract as the images: if it cannot play, the
+     frame is marked empty and the emoji shows instead. Autoplay is
+     dropped when motion is not wanted -- the poster stays put and
+     controls appear, so the video is still reachable on purpose.
+     ---------------------------------------------------------- */
+
+  function setupVideo() {
+    document.querySelectorAll(".media video").forEach(function (video) {
+      video.addEventListener("error", function () { markEmpty(video); });
+
+      if (reduceMotion) {
+        video.removeAttribute("autoplay");
+        video.autoplay = false;
+        video.loop = false;
+        video.controls = true;
+        video.pause();
+      }
+    });
+  }
+
+  /* ----------------------------------------------------------
      3. Mobile navigation
      ---------------------------------------------------------- */
 
@@ -242,6 +264,7 @@
   function init() {
     applyConfig();
     setupImageFallbacks();
+    setupVideo();
     setupNav();
     setupReveal();
     setupScrollEffects();

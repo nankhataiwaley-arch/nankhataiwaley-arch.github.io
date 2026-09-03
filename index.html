@@ -16,11 +16,14 @@
                            style="--d:80ms" animation stagger attributes
      font-src            — font files, locked to Google's font CDN
      img-src 'self'      — local photography and the logo, nothing remote
+     media-src 'self'    — the Our Story video. Without this the <video>
+                           falls back to default-src 'none' and is blocked
+                           with no visible error
      base-uri 'none'     — an injected <base> can't repoint relative paths
      form-action 'none'  — nothing can post anywhere. This site has no
                            forms and, per the product constraint, never will
      ============================================================ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <!-- ============ SEO ============ -->
@@ -286,9 +289,12 @@
        ============================================================ -->
   <section class="section story" id="story">
     <div class="wrap story__inner">
-      <div class="media media--tall reveal" data-reveal>
-        <img src="public/images/story/brand-story.jpg"
-             alt="The family kitchen where our Nan Khatai is baked" loading="lazy" width="640" height="780">
+      <div class="media media--story reveal" data-reveal>
+        <video src="public/videos/brand-story.mp4"
+               poster="public/images/story/brand-story.jpg"
+               width="1000" height="800"
+               autoplay muted loop playsinline preload="metadata"
+               aria-label="Nan Khatai being shaped, topped with almonds and baked"></video>
         <span class="media__fallback" aria-hidden="true">🏡</span>
       </div>
 

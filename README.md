@@ -88,10 +88,13 @@ public/images/
 │   └── nan-khatai-gift-box.jpg      500 × 400
 ├── story/
 │   ├── brand-intro.jpg             1000 × 625
-│   └── brand-story.jpg              640 × 780   portrait
+│   └── brand-story.jpg             1000 × 800   poster for the story video
 ├── instagram/
 │   └── ig-1.jpg … ig-6.jpg          400 × 400   square
 └── logo/
+
+public/videos/
+└── brand-story.mp4                1000 × 800   H.264, silent, loops
 ```
 
 **Until a photo is added**, that slot shows a warm gradient tile with an emoji

@@ -236,7 +236,6 @@ blockquote cite {
 
   /* A portrait crop would push the copy far below the fold once stacked. */
   .media--hero { aspect-ratio: 4 / 3; }
-  .media--tall { aspect-ratio: 4 / 3; }
 
   .ig-grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -256,7 +255,7 @@ blockquote cite {
 /* ---- Small phones ---- */
 @media (max-width: 400px) {
   .media--hero,
-  .media--tall,
+  .media--story,
   .media--soft { aspect-ratio: 4 / 3; }
 
   .hero__stamp { right: 0; bottom: -8px; }

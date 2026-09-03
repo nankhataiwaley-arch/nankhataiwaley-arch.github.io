@@ -87,7 +87,8 @@
   isolation: isolate;
 }
 
-.media img {
+.media img,
+.media video {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -96,7 +97,8 @@
   transition: transform .6s var(--ease);
 }
 
-.media.is-empty img { display: none; }
+.media.is-empty img,
+.media.is-empty video { display: none; }
 
 /* An illustration standing in for a photo. Fit it inside the frame at icon
    size so the gradient reads as its background, instead of cropping it to
@@ -124,7 +126,7 @@
 .media--hero    { aspect-ratio: 1 / 1; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
 .media--product { aspect-ratio: 5 / 4; border-radius: 0; }
 .media--soft    { aspect-ratio: 16 / 10; box-shadow: var(--shadow-md); }
-.media--tall    { aspect-ratio: 4 / 5; box-shadow: var(--shadow-md); }
+.media--story   { aspect-ratio: 5 / 4; box-shadow: var(--shadow-md); }
 
 /* ---------- Product card ------------------------------------ */
 
