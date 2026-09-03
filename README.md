@@ -82,7 +82,7 @@ public/images/
 ├── products/
 │   ├── almond-nan-khatai.png        icon        placeholder illustration
 │   ├── elaichi-nan-khatai.jpg       500 × 400
-│   ├── pista-badam-nan-khatai.jpg   500 × 400
+│   ├── pista-badam-nan-khatai.png   icon        placeholder illustration
 │   ├── nuts-nan-khatai.jpg          500 × 400
 │   ├── chocolate-nan-khatai.jpg     500 × 400
 │   └── nan-khatai-gift-box.jpg      500 × 400
