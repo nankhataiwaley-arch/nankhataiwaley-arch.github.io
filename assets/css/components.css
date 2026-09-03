@@ -103,6 +103,11 @@
    fill like a photograph. */
 .media img.is-icon { object-fit: contain; padding: 30%; }
 
+/* A transparent illustration lets the fallback show through behind it, which
+   an opaque photograph never did. Hide it while the icon is on screen. If the
+   icon ever fails, .is-empty drops this rule and the fallback returns. */
+.media:not(.is-empty) img.is-icon ~ .media__fallback { display: none; }
+
 .media__fallback {
   position: absolute;
   inset: 0;
