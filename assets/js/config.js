@@ -25,7 +25,7 @@ window.BUSINESS = {
   whatsapp: "923319180813",
 
   /* How the number is displayed on screen (free text). */
-  whatsappDisplay: "+92 331 918 0813",
+  whatsappDisplay: "+923319180813",
 
   /* Message pre-filled when someone taps a WhatsApp button. */
   whatsappMessage: "Hi! I would like to order Nan Khatai.",
