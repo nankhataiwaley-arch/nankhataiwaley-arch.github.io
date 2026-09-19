@@ -172,12 +172,23 @@
   margin-bottom: 14px;
 }
 
-/* Price. The spec keeps prices off this site; the Almond card carries one at
-   the owner's explicit request. Scoped as a child selector rather than given
+/* Price. The spec keeps prices off this site; the orderable cards carry one
+   at the owner's explicit request. Scoped as a child selector rather than given
    !important, which is enough to beat .card__body > p on specificity. */
 .card__body > .card__price {
   font-size: 17px;
   font-weight: 600;
+  color: var(--brown);
+  margin-bottom: 14px;
+}
+
+/* Teaser. Sits in the price slot on coming-soon cards, which keep their
+   prices back until launch (see PRICES.md). Same slot, same weight, set in the
+   display serif so it reads as a promise rather than a missing number. */
+.card__body > .card__teaser {
+  font-family: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 17px;
   color: var(--brown);
   margin-bottom: 14px;
 }
