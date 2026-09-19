@@ -211,6 +211,26 @@
 
 .card--feature { border-color: var(--gold-soft); }
 
+/* Coming soon — a variety the owner is not baking yet. The card keeps its
+   price and sizes but carries no CTA, so every link on the page still goes to
+   WhatsApp or Instagram.
+
+   Dimming .media as a whole, rather than the img and the fallback separately,
+   is deliberate: the two opacity: .5 declarations above have to stay equal to
+   each other, and this way it never touches them.
+
+   The hover reset matters just as much — without it a card with nothing to
+   click lifts and zooms exactly like the two that can be ordered. */
+.card--soon .media { opacity: .55; }
+@media (hover: hover) and (pointer: fine) {
+  .card--soon:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+    border-color: var(--line);
+  }
+  .card--soon:hover .media img { transform: none; }
+}
+
 .tag {
   align-self: flex-start;
   margin-bottom: 10px;
